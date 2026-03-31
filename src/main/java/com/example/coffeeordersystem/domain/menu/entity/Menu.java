@@ -1,6 +1,8 @@
 package com.example.coffeeordersystem.domain.menu.entity;
 
 import com.example.coffeeordersystem.common.entity.BaseEntity;
+import com.example.coffeeordersystem.domain.menu.consts.MenuCategory;
+import com.example.coffeeordersystem.domain.menu.consts.MenuStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
@@ -48,13 +50,5 @@ public class Menu extends BaseEntity {
         menu.status = MenuStatus.ON_SALE;
 
         return menu;
-    }
-
-    public enum MenuCategory {
-        COFFEE, LATTE, TEA, ADE, SMOOTHIE
-    }
-
-    public enum MenuStatus {
-        ON_SALE, SOLD_OUT, DISCONTINUED
     }
 }
