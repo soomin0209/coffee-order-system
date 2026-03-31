@@ -49,7 +49,7 @@ class MenuServiceTest {
     }
 
     @Test
-    @DisplayName("카테고리 필터로 메뉴 목록 조회 성공")
+    @DisplayName("메뉴 목록 조회 성공 - 카테고리 필터")
     void getMenus_withCategory_success() {
         // given
         List<MenusGetResponse> menus = List.of(
