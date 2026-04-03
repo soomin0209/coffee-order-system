@@ -52,4 +52,8 @@ public class User extends BaseEntity {
 
         return user;
     }
+
+    public void updatePointBalance(int amount) {
+        this.pointBalance += amount;
+    }
 }
