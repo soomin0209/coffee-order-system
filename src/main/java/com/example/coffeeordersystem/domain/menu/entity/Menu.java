@@ -4,7 +4,6 @@ import com.example.coffeeordersystem.common.entity.BaseEntity;
 import com.example.coffeeordersystem.domain.menu.consts.MenuCategory;
 import com.example.coffeeordersystem.domain.menu.consts.MenuStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +23,6 @@ public class Menu extends BaseEntity {
     private String name;
 
     @Column(nullable = false)
-    @Min(1)
     private int price;
 
     @Column(nullable = false, length = 20)
