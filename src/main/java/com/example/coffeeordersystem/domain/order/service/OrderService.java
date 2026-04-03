@@ -57,7 +57,7 @@ public class OrderService {
         OrderItem orderItem = OrderItem.register(order.getId(), menu.getId(), menu.getName(), menu.getPrice(), request.quantity());
         orderItemRepository.save(orderItem);
 
-        return new OrderCreateResponse(orderNumber, totalPrice, order.getStatus());
+        return new OrderCreateResponse(order.getId(), orderNumber, totalPrice, order.getStatus());
     }
 
     private String createOrderNumber() {
