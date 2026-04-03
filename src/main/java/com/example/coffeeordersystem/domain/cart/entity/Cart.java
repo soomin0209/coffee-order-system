@@ -8,7 +8,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "carts")
+@Table(
+        name = "carts",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "menu_id"})
+)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Cart extends BaseEntity {
     @Id
