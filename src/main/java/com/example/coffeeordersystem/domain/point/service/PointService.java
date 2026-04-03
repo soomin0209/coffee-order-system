@@ -21,7 +21,7 @@ public class PointService {
 
     @Transactional
     public PointsChargeResponse chargePoints(PointsChargeRequest request) {
-        User user = userRepository.findById(request.userId())
+        User user = userRepository.findByIdWithLock(request.userId())
                 .orElseThrow(() -> new ServiceErrorException(UserExceptionEnum.ERR_USER_NOT_FOUND));
 
         Point point = Point.charge(request.userId(), request.amount());
