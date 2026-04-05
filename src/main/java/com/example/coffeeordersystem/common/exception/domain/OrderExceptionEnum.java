@@ -7,7 +7,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum OrderExceptionEnum implements ErrorCode {
     ERR_ORDER_CREATE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "주문 번호 생성에 실패했습니다"),
-    ERR_ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 주문입니다");
+    ERR_ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 주문입니다"),
+    ERR_ORDER_NOT_PAYABLE(HttpStatus.BAD_REQUEST, "결제 가능한 주문이 아닙니다");
 
     private final HttpStatus httpStatus;
     private final String message;

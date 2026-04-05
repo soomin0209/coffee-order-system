@@ -5,6 +5,7 @@ import com.example.coffeeordersystem.common.exception.domain.OrderExceptionEnum;
 import com.example.coffeeordersystem.common.exception.domain.PaymentExceptionEnum;
 import com.example.coffeeordersystem.common.exception.domain.PointExceptionEnum;
 import com.example.coffeeordersystem.common.exception.domain.UserExceptionEnum;
+import com.example.coffeeordersystem.domain.order.consts.OrderStatus;
 import com.example.coffeeordersystem.domain.order.entity.Order;
 import com.example.coffeeordersystem.domain.order.repository.OrderRepository;
 import com.example.coffeeordersystem.domain.payment.consts.PaymentStatus;
@@ -41,6 +42,10 @@ public class PaymentService {
     public PaymentResponse executePayment(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ServiceErrorException(OrderExceptionEnum.ERR_ORDER_NOT_FOUND));
+
+        if (order.getStatus() != OrderStatus.PENDING) {
+            throw new ServiceErrorException(OrderExceptionEnum.ERR_ORDER_NOT_PAYABLE);
+        }
 
         if (paymentRepository.existsByOrderIdAndStatus(orderId, PaymentStatus.COMPLETED)) {
             throw new ServiceErrorException(PaymentExceptionEnum.ERR_PAYMENT_ALREADY_COMPLETED);
