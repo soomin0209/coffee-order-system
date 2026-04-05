@@ -35,6 +35,7 @@ public class PaymentService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final PointRepository pointRepository;
+    private final PaymentFailService paymentFailService;
 
     @Transactional
     public PaymentResponse executePayment(Long orderId) {
@@ -57,11 +58,16 @@ public class PaymentService {
         Payment payment = Payment.register(paymentNumber, user.getId(), order.getId(), order.getTotalPrice());
         paymentRepository.save(payment);
 
-        Point point = Point.use(payment.getUserId(), payment.getOrderId(), -payment.getAmount());
-        pointRepository.save(point);
+        try {
+            Point point = Point.use(payment.getUserId(), payment.getOrderId(), -payment.getAmount());
+            pointRepository.save(point);
 
-        payment.complete();
-        order.pay();
+            payment.complete();
+            order.pay();
+        } catch (Exception e) {
+            paymentFailService.failPayment(payment);
+            throw new ServiceErrorException(PaymentExceptionEnum.ERR_PAYMENT_FAILED);
+        }
 
         return new PaymentResponse(payment.getId(), paymentNumber, payment.getAmount(), payment.getStatus());
     }
