@@ -66,6 +66,8 @@ public class PaymentService {
             Point point = Point.use(payment.getUserId(), payment.getOrderId(), -payment.getAmount());
             pointRepository.save(point);
 
+            user.updatePointBalance(-payment.getAmount());
+
             payment.complete();
             order.pay();
         } catch (Exception e) {
