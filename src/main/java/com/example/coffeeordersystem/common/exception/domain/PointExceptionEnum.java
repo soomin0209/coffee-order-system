@@ -5,14 +5,13 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public enum OrderExceptionEnum implements ErrorCode {
-    ERR_ORDER_CREATE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "주문 번호 생성에 실패했습니다"),
-    ERR_ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 주문입니다");
+public enum PointExceptionEnum implements ErrorCode {
+    ERR_POINT_INSUFFICIENT(HttpStatus.BAD_REQUEST, "포인트가 부족합니다");
 
     private final HttpStatus httpStatus;
     private final String message;
 
-    OrderExceptionEnum(HttpStatus httpStatus, String message) {
+    PointExceptionEnum(HttpStatus httpStatus, String message) {
         this.httpStatus = httpStatus;
         this.message = message;
     }

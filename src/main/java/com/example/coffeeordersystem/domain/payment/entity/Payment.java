@@ -48,4 +48,8 @@ public class Payment extends BaseEntity {
 
         return payment;
     }
+
+    public void complete() {
+        this.status = PaymentStatus.COMPLETED;
+    }
 }

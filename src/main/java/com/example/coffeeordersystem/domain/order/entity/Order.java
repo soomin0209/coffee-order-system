@@ -47,4 +47,8 @@ public class Order extends BaseEntity {
 
         return order;
     }
+
+    public void pay() {
+        this.status = OrderStatus.PAID;
+    }
 }
