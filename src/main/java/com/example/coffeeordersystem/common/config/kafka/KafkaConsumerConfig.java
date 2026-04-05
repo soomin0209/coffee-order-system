@@ -72,6 +72,25 @@ public class KafkaConsumerConfig {
     }
 
 
+    // 인기 메뉴 전용 ConsumerFactory
+    @Bean
+    public ConsumerFactory<String, PaymentCompletedEvent> menuRankingConsumerFactory() {
+        return buildConsumerFactory("menu-ranking-group");
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, PaymentCompletedEvent> menuRankingKafkaListenerContainerFactory(
+            CommonErrorHandler commonErrorHandlerWithDLT
+    ) {
+        ConcurrentKafkaListenerContainerFactory<String, PaymentCompletedEvent> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(menuRankingConsumerFactory());
+        factory.setConcurrency(3);
+        factory.setCommonErrorHandler(commonErrorHandlerWithDLT);
+
+        return factory;
+    }
+
+
     // ErrorHandler
     @Bean
     public CommonErrorHandler commonErrorHandlerWithDLT(KafkaTemplate<String, PaymentCompletedEvent> paymentCompletedEventKafkaTemplate) {

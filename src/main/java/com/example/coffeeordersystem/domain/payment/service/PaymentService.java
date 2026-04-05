@@ -85,7 +85,7 @@ public class PaymentService {
 
         OrderItem orderItem = orderItemRepository.findByOrderId(order.getId())
                 .orElseThrow(() -> new ServiceErrorException(OrderItemExceptionEnum.ERR_ORDER_ITEM_NOT_FOUND));
-        paymentProducer.send(new PaymentCompletedEvent(user.getId(), orderItem.getMenuId(), payment.getAmount()));
+        paymentProducer.send(new PaymentCompletedEvent(user.getId(), orderItem.getMenuId(), payment.getAmount(), payment.getCreatedAt()));
 
         return new PaymentResponse(payment.getId(), paymentNumber, payment.getAmount(), payment.getStatus());
     }
