@@ -43,7 +43,7 @@ public class KafkaConsumerConfig {
     // 기본 ConsumerFactory
     private ConsumerFactory<String, PaymentCompletedEvent> buildConsumerFactory(String groupId) {
         JacksonJsonDeserializer<PaymentCompletedEvent> deserializer = new JacksonJsonDeserializer<>(PaymentCompletedEvent.class);
-        deserializer.addTrustedPackages("com.example.kafkaredispractice.common.model.kafka.event");
+        deserializer.addTrustedPackages("com.example.coffeeordersystem.domain.payment.event");
 
         return new DefaultKafkaConsumerFactory<>(
                 baseConsumerProps(groupId),
@@ -65,6 +65,7 @@ public class KafkaConsumerConfig {
     ) {
         ConcurrentKafkaListenerContainerFactory<String, PaymentCompletedEvent> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(paymentHistoryConsumerFactory());
+        factory.setConcurrency(3);
         factory.setCommonErrorHandler(commonErrorHandlerWithDLT);
 
         return factory;

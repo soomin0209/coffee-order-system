@@ -1,6 +1,5 @@
 package com.example.coffeeordersystem.common.config.kafka;
 
-import com.example.coffeeordersystem.domain.order.event.OrderEvent;
 import com.example.coffeeordersystem.domain.payment.event.PaymentCompletedEvent;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;

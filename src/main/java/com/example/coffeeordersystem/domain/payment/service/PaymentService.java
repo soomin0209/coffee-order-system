@@ -1,16 +1,17 @@
 package com.example.coffeeordersystem.domain.payment.service;
 
 import com.example.coffeeordersystem.common.exception.ServiceErrorException;
-import com.example.coffeeordersystem.common.exception.domain.OrderExceptionEnum;
-import com.example.coffeeordersystem.common.exception.domain.PaymentExceptionEnum;
-import com.example.coffeeordersystem.common.exception.domain.PointExceptionEnum;
-import com.example.coffeeordersystem.common.exception.domain.UserExceptionEnum;
+import com.example.coffeeordersystem.common.exception.domain.*;
 import com.example.coffeeordersystem.domain.order.consts.OrderStatus;
 import com.example.coffeeordersystem.domain.order.entity.Order;
+import com.example.coffeeordersystem.domain.order.entity.OrderItem;
+import com.example.coffeeordersystem.domain.order.repository.OrderItemRepository;
 import com.example.coffeeordersystem.domain.order.repository.OrderRepository;
 import com.example.coffeeordersystem.domain.payment.consts.PaymentStatus;
 import com.example.coffeeordersystem.domain.payment.dto.PaymentResponse;
 import com.example.coffeeordersystem.domain.payment.entity.Payment;
+import com.example.coffeeordersystem.domain.payment.event.PaymentCompletedEvent;
+import com.example.coffeeordersystem.domain.payment.producer.PaymentProducer;
 import com.example.coffeeordersystem.domain.payment.repository.PaymentRepository;
 import com.example.coffeeordersystem.domain.point.entity.Point;
 import com.example.coffeeordersystem.domain.point.repository.PointRepository;
@@ -37,6 +38,8 @@ public class PaymentService {
     private final UserRepository userRepository;
     private final PointRepository pointRepository;
     private final PaymentFailService paymentFailService;
+    private final OrderItemRepository orderItemRepository;
+    private final PaymentProducer paymentProducer;
 
     @Transactional
     public PaymentResponse executePayment(Long orderId) {
@@ -79,6 +82,10 @@ public class PaymentService {
             paymentFailService.failPayment(payment);
             throw new ServiceErrorException(PaymentExceptionEnum.ERR_PAYMENT_FAILED);
         }
+
+        OrderItem orderItem = orderItemRepository.findByOrderId(order.getId())
+                .orElseThrow(() -> new ServiceErrorException(OrderItemExceptionEnum.ERR_ORDER_ITEM_NOT_FOUND));
+        paymentProducer.send(new PaymentCompletedEvent(user.getId(), orderItem.getMenuId(), payment.getAmount()));
 
         return new PaymentResponse(payment.getId(), paymentNumber, payment.getAmount(), payment.getStatus());
     }
