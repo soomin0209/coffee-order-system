@@ -42,6 +42,10 @@ public class OrderService {
         User user = userRepository.findById(request.userId())
                 .orElseThrow(() -> new ServiceErrorException(UserExceptionEnum.ERR_USER_NOT_FOUND));
 
+        if (user.getDeletedAt() != null) {
+            throw new ServiceErrorException(UserExceptionEnum.ERR_USER_DELETED);
+        }
+
         Menu menu = menuRepository.findById(request.menuId())
                 .orElseThrow(() -> new ServiceErrorException(MenuExceptionEnum.ERR_MENU_NOT_FOUND));
 

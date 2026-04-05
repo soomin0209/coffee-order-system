@@ -49,6 +49,10 @@ public class PaymentService {
         User user = userRepository.findById(order.getUserId())
                 .orElseThrow(() -> new ServiceErrorException(UserExceptionEnum.ERR_USER_NOT_FOUND));
 
+        if (user.getDeletedAt() != null) {
+            throw new ServiceErrorException(UserExceptionEnum.ERR_USER_DELETED);
+        }
+
         int pointBalance = pointRepository.sumAmountByUserID(user.getId());
         if (order.getTotalPrice() > pointBalance) {
             throw new ServiceErrorException(PointExceptionEnum.ERR_POINT_INSUFFICIENT);
