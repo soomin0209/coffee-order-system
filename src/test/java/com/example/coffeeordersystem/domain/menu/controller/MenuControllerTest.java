@@ -3,6 +3,7 @@ package com.example.coffeeordersystem.domain.menu.controller;
 import com.example.coffeeordersystem.common.dto.PageResponse;
 import com.example.coffeeordersystem.domain.menu.consts.MenuCategory;
 import com.example.coffeeordersystem.domain.menu.dto.MenusGetResponse;
+import com.example.coffeeordersystem.domain.menu.service.MenuRankingService;
 import com.example.coffeeordersystem.domain.menu.service.MenuService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,9 @@ class MenuControllerTest {
 
     @MockitoBean
     private MenuService menuService;
+
+    @MockitoBean
+    private MenuRankingService menuRankingService;
 
     @Test
     @DisplayName("메뉴 목록 조회 성공 - 기본 파라미터")

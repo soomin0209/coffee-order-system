@@ -43,7 +43,7 @@ public class PaymentService {
 
     @Transactional
     public PaymentResponse executePayment(Long orderId) {
-        Order order = orderRepository.findById(orderId)
+        Order order = orderRepository.findByIdWithLock(orderId)
                 .orElseThrow(() -> new ServiceErrorException(OrderExceptionEnum.ERR_ORDER_NOT_FOUND));
 
         if (order.getStatus() != OrderStatus.PENDING) {
@@ -54,7 +54,7 @@ public class PaymentService {
             throw new ServiceErrorException(PaymentExceptionEnum.ERR_PAYMENT_ALREADY_COMPLETED);
         }
 
-        User user = userRepository.findById(order.getUserId())
+        User user = userRepository.findByIdWithLock(order.getUserId())
                 .orElseThrow(() -> new ServiceErrorException(UserExceptionEnum.ERR_USER_NOT_FOUND));
 
         if (user.getDeletedAt() != null) {

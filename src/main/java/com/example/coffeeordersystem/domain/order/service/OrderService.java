@@ -3,7 +3,6 @@ package com.example.coffeeordersystem.domain.order.service;
 import com.example.coffeeordersystem.common.exception.ServiceErrorException;
 import com.example.coffeeordersystem.common.exception.domain.MenuExceptionEnum;
 import com.example.coffeeordersystem.common.exception.domain.OrderExceptionEnum;
-import com.example.coffeeordersystem.common.exception.domain.PointExceptionEnum;
 import com.example.coffeeordersystem.common.exception.domain.UserExceptionEnum;
 import com.example.coffeeordersystem.domain.menu.consts.MenuStatus;
 import com.example.coffeeordersystem.domain.menu.entity.Menu;
