@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.kafka.core.KafkaTemplate;
 
+import java.time.LocalDateTime;
+
 import static com.example.coffeeordersystem.common.config.kafka.KafkaTopicConstants.TOPIC_PAYMENT_COMPLETED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
@@ -26,9 +28,9 @@ class PaymentProducerTest {
 
     @Test
     @DisplayName("결제 완료 이벤트 실시간 전송")
-    void send_paymentCompletedEvent_sucess() {
+    void send_paymentCompletedEvent_success() {
         // given
-        PaymentCompletedEvent event = new PaymentCompletedEvent(1L, 1L, 2000);
+        PaymentCompletedEvent event = new PaymentCompletedEvent(1L, 1L, 2000, LocalDateTime.now());
 
         // when
         paymentProducer.send(event);
