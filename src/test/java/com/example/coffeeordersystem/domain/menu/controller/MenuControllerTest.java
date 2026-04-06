@@ -2,6 +2,7 @@ package com.example.coffeeordersystem.domain.menu.controller;
 
 import com.example.coffeeordersystem.common.dto.PageResponse;
 import com.example.coffeeordersystem.domain.menu.consts.MenuCategory;
+import com.example.coffeeordersystem.domain.menu.dto.MenuRankingResponse;
 import com.example.coffeeordersystem.domain.menu.dto.MenusGetResponse;
 import com.example.coffeeordersystem.domain.menu.service.MenuRankingService;
 import com.example.coffeeordersystem.domain.menu.service.MenuService;
@@ -79,5 +80,39 @@ class MenuControllerTest {
                         .param("category", "INVALID"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false));
+    }
+
+    @Test
+    @DisplayName("인기 메뉴 TOP3 조회 성공")
+    void findMenuRankingTop3_success() throws Exception {
+        // given
+        List<MenuRankingResponse> response = List.of(
+                new MenuRankingResponse("3", 150.0),
+                new MenuRankingResponse("1", 120.0),
+                new MenuRankingResponse("5", 90.0)
+        );
+        given(menuRankingService.findMenuRankingTop3InLast7Days()).willReturn(response);
+
+        // when & then
+        mockMvc.perform(get("/api/menus/ranking"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.message").value("인기 메뉴 목록 조회 성공"))
+                .andExpect(jsonPath("$.data.length()").value(3))
+                .andExpect(jsonPath("$.data[0].menuId").value("3"))
+                .andExpect(jsonPath("$.data[0].score").value(150.0));
+    }
+
+    @Test
+    @DisplayName("인기 메뉴 TOP3 조회 성공 - 데이터 없음")
+    void findMenuRankingTop3_empty() throws Exception {
+        // given
+        given(menuRankingService.findMenuRankingTop3InLast7Days()).willReturn(List.of());
+
+        // when & then
+        mockMvc.perform(get("/api/menus/ranking"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.length()").value(0));
     }
 }
